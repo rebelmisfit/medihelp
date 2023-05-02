@@ -1,17 +1,11 @@
-// import 'package:doctor_app/screens/auth/sign_up_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:medihelp/components/sign-in-form.dart';
 import 'package:medihelp/constants.dart';
 import 'package:medihelp/screens/sign-up.dart';
 
-// import '../../constants.dart';
-// import 'components/sign_in_form.dart';
-
 class SignInScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -31,12 +25,12 @@ class SignInScreen extends StatelessWidget {
                       "Sign In",
                       style: Theme.of(context)
                           .textTheme
-                          .headline5!
+                          .headlineSmall!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     Row(
                       children: [
-                        Text("Don't have an account?"),
+                        const Text("Don't have an account?"),
                         TextButton(
                           onPressed: () => Navigator.push(
                             context,

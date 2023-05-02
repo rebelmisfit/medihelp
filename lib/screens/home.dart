@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medihelp/constants.dart';
+import 'package:medihelp/screens/nearbyPharmacy.dart';
 import 'package:medihelp/screens/sign-in.dart';
 import 'package:medihelp/screens/sign-up.dart';
 
@@ -30,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
+                          builder: (context) => nearbyPharmacy(),
                         ),
                       ),
                       style: TextButton.styleFrom(
