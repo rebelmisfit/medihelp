@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medihelp/screens/home.dart';
 
-const primaryColor = Color(0xFF4CAF50);
+const primaryColor = Color(0xFF375AB4);
 const textColor = Color(0xFF35364F);
 const backgroundColor = Color(0xFFE6EFF9);
 const redColor = Color(0xFFE85050);

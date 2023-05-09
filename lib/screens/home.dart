@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       style: TextButton.styleFrom(
-                        backgroundColor: Color(0xFF4CAF50),
+                        backgroundColor: Color(0xFF375AB4),
                       ),
                       child: Text("Sign Up"),
                     ),
@@ -53,9 +53,9 @@ class WelcomeScreen extends StatelessWidget {
                         style: TextButton.styleFrom(
                           // backgroundColor: Color(0xFF6CD8D1),
                           elevation: 0,
-                          backgroundColor: Color(0xFF699D72),
+                          backgroundColor: Color(0xFF375AB4),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Color(0xFF699D72)),
+                            side: BorderSide(color: Color(0xFF375AB4)),
                           ),
                         ),
                         child: Text("Sign In"),

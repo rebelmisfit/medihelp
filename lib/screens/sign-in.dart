@@ -5,6 +5,8 @@ import 'package:medihelp/components/sign-in-form.dart';
 import 'package:medihelp/constants.dart';
 import 'package:medihelp/screens/sign-up.dart';
 
+import 'dashboard.dart';
+
 // import '../../constants.dart';
 // import 'components/sign_in_form.dart';
 
@@ -60,6 +62,11 @@ class SignInScreen extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Dashboard()),
+                            );
                           }
                         },
                         child: Text("Sign In"),
