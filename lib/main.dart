@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medihelp/screens/home.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants.dart';
+import 'package:riverpod/riverpod.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Medihelp',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         primaryColor: primaryColor,
         textTheme: Theme.of(context).textTheme.apply(displayColor: textColor),
         elevatedButtonTheme: ElevatedButtonThemeData(

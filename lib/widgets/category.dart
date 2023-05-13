@@ -5,12 +5,11 @@ import 'package:medihelp/constants.dart';
 class CategoryCard extends StatelessWidget {
   final String? src;
   final String? title;
-  final Function? press;
+
   const CategoryCard({
     Key? key,
     this.src,
     this.title,
-    this.press,
   }) : super(key: key);
 
   @override
@@ -34,7 +33,6 @@ class CategoryCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: press!(),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+import '../components/mapscreen.dart';
 import '../widgets/category.dart';
 
 void main() {
@@ -76,20 +77,33 @@ class Dashboard extends StatelessWidget {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                       children: <Widget>[
-                        CategoryCard(
-                          title: "Set new reminder ",
-                          src: "assets/images/clock.png",
-                          press: () {},
+                        InkWell(
+                          child: CategoryCard(
+                            title: "Set new reminder ",
+                            src: "assets/images/clock.png",
+                          ),
+                          onTap: () {},
                         ),
-                        CategoryCard(
-                          title: "Pharmacies near me",
-                          src: "assets/images/pharmacy.png",
-                          press: () {},
+                        InkWell(
+                          child: CategoryCard(
+                            title: "Pharmacies near me",
+                            src: "assets/images/pharmacy.png",
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MapScreen(),
+                              ),
+                            );
+                          },
                         ),
-                        CategoryCard(
-                          title: "Search medicine",
-                          src: "assets/images/medicine.png",
-                          press: () {},
+                        InkWell(
+                          child: CategoryCard(
+                            title: "Search medicine",
+                            src: "assets/images/medicine.png",
+                          ),
+                          onTap: () {},
                         ),
                       ],
                     ),
