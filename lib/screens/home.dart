@@ -2,7 +2,6 @@
 // import 'package:doctor_app/screens/auth/sign_in_screen.dart';
 // import 'package:doctor_app/screens/auth/sign_up_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:medihelp/constants.dart';
 import 'package:medihelp/screens/sign-in.dart';
 import 'package:medihelp/screens/sign-up.dart';

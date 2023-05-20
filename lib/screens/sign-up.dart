@@ -1,7 +1,6 @@
 // import 'package:doctor_app/constants.dart';
 // import 'package:doctor_app/screens/auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 // import 'package:form_field_validator/form_field_validator.dart';
 import 'package:medihelp/components/sign-up-form.dart';
 import 'package:medihelp/constants.dart';

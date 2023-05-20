@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:medihelp/screens/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants.dart';
@@ -31,7 +32,36 @@ class MyApp extends StatelessWidget {
           focusedBorder: textFieldBorder,
         ),
       ),
-      home: WelcomeScreen(),
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 5)).then((value) => Navigator.of(context)
+        .pushReplacement(
+            MaterialPageRoute(builder: (context) => WelcomeScreen())));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+            height: 200.0,
+            width: 200.0,
+            child: Lottie.asset('assets/images/splash.json')),
+      ),
     );
   }
 }

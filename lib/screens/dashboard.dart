@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import '../components/mapscreen.dart';
 import '../widgets/category.dart';
@@ -58,7 +57,7 @@ class Dashboard extends StatelessWidget {
                         color: Color(0xFFF2BEA1),
                         shape: BoxShape.circle,
                       ),
-                      child: SvgPicture.asset("assets/icons/menu.svg"),
+                      child: Image.asset("assets/icons/menu.svg"),
                     ),
                   ),
                   Text(
