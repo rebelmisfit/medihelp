@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:riverpod/riverpod.dart';
+import 'dart:ui' as ui;
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -20,6 +23,24 @@ class _MapScreenState extends State<MapScreen> {
     zoom: 11.5,
   );
   Completer<GoogleMapController> _controller = Completer();
+
+  Set<Marker> _markers = Set<Marker>();
+  Set<Marker> _markersDupe = Set<Marker>();
+
+  Timer? _debounce;
+  int markerIdCounter = 1;
+  bool searchToggle = false;
+  bool radiusSlider = false;
+  bool cardTapped = false;
+  bool pressedNear = false;
+  bool getDirections = false;
+  var radiusValue = 3000.0;
+  var tappedPoint;
+  List allFavoritePlaces = [];
+
+  String tokenKey = '';
+
+  Set<Circle> _circles = Set<Circle>();
 
   void _setCircle(LatLng point) async {
     final GoogleMapController controller = await _controller.future;
@@ -40,19 +61,55 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  bool searchToggle = false;
-  bool radiusSlider = false;
-  bool cardTapped = false;
-  bool pressedNear = false;
-  bool getDirections = false;
-  var radiusValue = 3000.0;
-  Set<Circle> _circles = Set<Circle>();
-  //
-  // @override
-  // void dispose() {
-  //   _googleMapController.dispose();
-  //   super.dispose();
-  // }
+  _setNearMarker(LatLng point, String label, List types, String status) async {
+    var counter = markerIdCounter++;
+    final Uint8List markerIcon;
+    if (types.contains('restaurants'))
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    else if (types.contains('food'))
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    else if (types.contains('school'))
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    else if (types.contains('bar'))
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    else if (types.contains('lodging')) {
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    } else if (types.contains('store')) {
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    } else if (types.contains('locality')) {
+      markerIcon =
+          await getBytesFromAsset('assets/mapicons/health-medical.png', 75);
+    } else {
+      markerIcon = await getBytesFromAsset('assets/mapicons/places.png', 75);
+    }
+
+    final Marker marker = Marker(
+        markerId: MarkerId('marker_$counter'),
+        position: point,
+        onTap: () {},
+        icon: BitmapDescriptor.fromBytes(markerIcon));
+
+    setState(() {
+      _markers.add(marker);
+    });
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +125,111 @@ class _MapScreenState extends State<MapScreen> {
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
-              //   onTap: (point),
-              // {
-              //   tappedPoint = point;
-              //   _setCircle(point);
-              // }
+              onTap: (point) {
+                tappedPoint = point;
+                _setCircle(point);
+              },
             ),
+            radiusSlider
+                ? Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 0.0),
+                    child: Container(
+                      height: 50.0,
+                      color: Colors.black.withOpacity(0.3),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Slider(
+                            value: radiusValue,
+                            onChanged: (newValue) {
+                              radiusValue = newValue;
+                              pressedNear = false;
+                              _setCircle(tappedPoint);
+                            },
+                            max: 7000.0,
+                            min: 1000.0,
+                          )),
+                          !pressedNear
+                              ? IconButton(
+                                  onPressed: () {
+                                    if (_debounce?.isActive ?? false)
+                                      _debounce?.cancel();
+                                    _debounce =
+                                        Timer(Duration(seconds: 2), () async {
+                                      var placesResult = await MapServices()
+                                          .getPlaceDetails(
+                                              tappedPoint, radiusValue.toInt());
+
+                                      List<dynamic> placesWithin =
+                                          placesResult['results'] as List;
+
+                                      allFavoritePlaces = placesWithin;
+
+                                      tokenKey =
+                                          placesResult['next_page_token'] ??
+                                              'none';
+                                      _markers = {};
+                                      placesWithin.forEach((element) {
+                                        _setNearMarker(
+                                          LatLng(
+                                              element['geometry']['location']
+                                                  ['lat'],
+                                              element['geometry']['location']
+                                                  ['lng']),
+                                          element['name'],
+                                          element['types'],
+                                          element['business_status'] ??
+                                              'not available',
+                                        );
+                                      });
+                                      _markersDupe = _markers;
+                                      pressedNear = true;
+                                    });
+                                  },
+                                  icon:
+                                      Icon(Icons.near_me, color: Colors.white),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    if (_debounce?.isActive ?? false)
+                                      _debounce?.cancel();
+                                    _debounce =
+                                        Timer(Duration(seconds: 2), () async {
+                                      if (tokenKey != 'none') {
+                                        var placesResult = await MapServices()
+                                            .getMorePlaceDetails(tokenKey);
+                                        List<dynamic> placesWithin =
+                                            placesResult['results'] as List;
+
+                                        allFavoritePlaces.addAll(placesWithin);
+                                        tokenKey =
+                                            placesResult['next_page_token'] ??
+                                                'none';
+                                        placesWithin.forEach((element) {
+                                          _setNearMarker(
+                                            LatLng(
+                                                element['geometry']['location']
+                                                    ['lat'],
+                                                element['geometry']['location']
+                                                    ['lng']),
+                                            element['name'],
+                                            element['types'],
+                                            element['business_status'] ??
+                                                'not available',
+                                          );
+                                        });
+                                      } else {
+                                        print('no more places');
+                                      }
+                                    });
+                                  },
+                                  icon: Icon(Icons.more),
+                                ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
         floatingActionButton: FabCircularMenu(
@@ -123,7 +279,19 @@ class MapServices {
     var lng = coords.longitude;
 
     final String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&type=pharmacy&key=$key';
+        //'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&type=pharmacy&key=$key';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+
+    return json;
+  }
+
+  Future<dynamic> getMorePlaceDetails(String token) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&pagetoken=$token&key=$key';
 
     var response = await http.get(Uri.parse(url));
 

@@ -57,7 +57,7 @@ class Dashboard extends StatelessWidget {
                         color: Color(0xFFF2BEA1),
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset("assets/icons/menu.svg"),
+                      child: Icon(Icons.person),
                     ),
                   ),
                   Text(
