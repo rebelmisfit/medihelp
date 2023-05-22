@@ -9,6 +9,7 @@ import 'dart:convert' as convert;
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:riverpod/riverpod.dart';
 import 'dart:ui' as ui;
+import 'package:medihelp/services/mapservices.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.773972, -122.431297),
+    target: LatLng(18.520430, 73.856743),
     zoom: 11.5,
   );
   Completer<GoogleMapController> _controller = Completer();
@@ -267,36 +268,5 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ],
         ));
-  }
-}
-
-class MapServices {
-  final String key = '<AIzaSyDLxYuRQS-DO9Ufo0yLRGrFTbTOxc1Nm9o>';
-  final String types = 'geocode';
-
-  Future<dynamic> getPlaceDetails(LatLng coords, int radius) async {
-    var lat = coords.latitude;
-    var lng = coords.longitude;
-
-    final String url =
-        //'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&type=pharmacy&key=$key';
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&key=$key';
-
-    var response = await http.get(Uri.parse(url));
-
-    var json = convert.jsonDecode(response.body);
-
-    return json;
-  }
-
-  Future<dynamic> getMorePlaceDetails(String token) async {
-    final String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&pagetoken=$token&key=$key';
-
-    var response = await http.get(Uri.parse(url));
-
-    var json = convert.jsonDecode(response.body);
-
-    return json;
   }
 }
