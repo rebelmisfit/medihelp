@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medihelp/alarm_helper.dart';
 import 'package:medihelp/components/notifi-service.dart';
 import 'package:medihelp/main.dart';
 import '/components/alarm-info.dart';
@@ -13,6 +14,14 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
+  AlarmHelper _alarmHelper = AlarmHelper();
+  @override
+  void initState() {
+    _alarmHelper.initializeDatabase().then((value) => {
+          print("db ----initialised!"),
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,7 +72,7 @@ class _ReminderPageState extends State<ReminderPage> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                alarm.description!,
+                                alarm.title!,
                                 style: TextStyle(
                                     color: Colors.white, fontFamily: 'avenir'),
                               ),
@@ -111,7 +120,12 @@ class _ReminderPageState extends State<ReminderPage> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        scheduleNotification();
+                        _alarmHelper.initializeDatabase();
+                        var alarmInfo = AlarmInfo(
+                          alarmDateTime: DateTime.now(),
+                          gradientColorIndex: alarmList.length,
+                          title: "PBL",
+                        );
                       },
                       child: Column(
                         children: <Widget>[
@@ -148,6 +162,7 @@ class _ReminderPageState extends State<ReminderPage> {
       Duration(seconds: 10),
     );
     String timeZone = 'Asia/Kolkata';
+    String sound = 'a_long_cold_sting.wav';
     var scheduleNotifcationDateTime =
         tz.TZDateTime.from(dateTime, tz.getLocation(timeZone));
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -156,6 +171,7 @@ class _ReminderPageState extends State<ReminderPage> {
       channelDescription: 'Channel for Alarm notification',
       icon: 'medihelp_logo',
       largeIcon: DrawableResourceAndroidBitmap('medihelp_logo'),
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
     );
     var iOSPlatformChannelSpecifics = DarwinNotificationDetails(
       sound: 'a_long_cold_sting.wav',
