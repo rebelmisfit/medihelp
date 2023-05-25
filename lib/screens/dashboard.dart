@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:medihelp/screens/reminder-screen.dart';
 import '../components/mapscreen.dart';
 import '../widgets/category.dart';
 
@@ -81,7 +82,14 @@ class Dashboard extends StatelessWidget {
                             title: "Set new reminder ",
                             src: "assets/images/clock.png",
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ReminderPage(),
+                              ),
+                            );
+                          },
                         ),
                         InkWell(
                           child: CategoryCard(
