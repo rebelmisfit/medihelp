@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:medihelp/services/medicine_search.dart';
 import '../components/mapscreen.dart';
 import '../widgets/category.dart';
 
@@ -61,7 +62,7 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Good Morning \nChristine",
+                    "fall in love with taking care of yourself",
                     style: TextStyle(
                       fontFamily: 'SourceSansPro',
                       fontSize: 30,
@@ -102,7 +103,14 @@ class Dashboard extends StatelessWidget {
                             title: "Search medicine",
                             src: "assets/images/medicine.png",
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchScreen(),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

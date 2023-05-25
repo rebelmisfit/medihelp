@@ -66,6 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medicine Search'),
+        backgroundColor: Color(0xFF375AB4),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -79,9 +80,11 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _performSearch,
-              child: Text('Search'),
-            ),
+                onPressed: _performSearch,
+                child: Text('Search'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF375AB4),
+                )),
             SizedBox(height: 16.0),
             Expanded(
               child: ListView.builder(
