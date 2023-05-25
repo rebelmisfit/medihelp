@@ -75,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: 'Enter a medicine name',
+                labelText: 'Enter medicine name',
               ),
             ),
             SizedBox(height: 16.0),

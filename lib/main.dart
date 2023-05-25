@@ -4,8 +4,29 @@ import 'package:medihelp/screens/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tzl;
 
-void main() {
+FlutterLocalNotificationsPlugin notificationPlugin =
+    FlutterLocalNotificationsPlugin();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  tzl.initializeTimeZones();
+  var initSettingsAndroid = AndroidInitializationSettings('medihelp_logo');
+  var initSettingsIOS = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification:
+          (int id, String? title, String? body, String? payload) async {});
+  var initializationSettings = InitializationSettings(
+    android: initSettingsAndroid,
+    iOS: initSettingsIOS,
+  );
+  await notificationPlugin.initialize(
+    initializationSettings,
+  );
   runApp(ProviderScope(child: MyApp()));
 }
 
