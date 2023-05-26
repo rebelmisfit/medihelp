@@ -7,11 +7,15 @@ import 'package:riverpod/riverpod.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzl;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 FlutterLocalNotificationsPlugin notificationPlugin =
     FlutterLocalNotificationsPlugin();
-void main() async {
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   tzl.initializeTimeZones();
   var initSettingsAndroid = AndroidInitializationSettings('medihelp_logo');
   var initSettingsIOS = DarwinInitializationSettings(

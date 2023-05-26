@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:medihelp/components/sign-in-form.dart';
 import 'package:medihelp/constants.dart';
 import 'package:medihelp/screens/sign-up.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'dashboard.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 // import '../../constants.dart';
 // import 'components/sign_in_form.dart';
 
@@ -68,6 +70,7 @@ class SignInScreen extends StatelessWidget {
                             );
                           }
                         },
+                        //   onPressed: signIn,
                         child: Text("Sign In"),
                       ),
                     ),
@@ -80,4 +83,9 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
+
+  // Future signIn() async {
+  //   await FirebaseAuth.instance
+  //       .signInWithEmailAndPassword(email: email, password: password);
+  // }
 }

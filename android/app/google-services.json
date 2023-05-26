@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "171331126853",
+    "project_id": "medihelp-ef2d2",
+    "storage_bucket": "medihelp-ef2d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171331126853:android:26a23ec2261d098f8f852c",
+        "android_client_info": {
+          "package_name": "com.example.medihelp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4lsPclYxOHyPjmOpSpxTTODyZRuZWdOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
