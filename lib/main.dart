@@ -31,14 +31,15 @@ Future main() async {
   await notificationPlugin.initialize(
     initializationSettings,
   );
-  runApp(ProviderScope(child: MyApp()));
+  runApp( MyApp());
 }
-
+ final navigatorKey =GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Medihelp',
       theme: ThemeData(
