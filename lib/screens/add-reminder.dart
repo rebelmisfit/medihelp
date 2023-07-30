@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:medihelp/screens/reminder-screen.dart';
+import 'package:medihelp/services/SQLHelper.dart';
 
 import '../components/alarm-info.dart';
 
@@ -75,7 +76,7 @@ class _datetimeState extends State<datetime> {
                         );
                         showDatePicker(
                           context: context,
-                          initialDate: dateTime,
+                          initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2025),
                         ).then((date) {
@@ -138,7 +139,7 @@ class _datetimeState extends State<datetime> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print(dateTime);
                   Navigator.pop(
                     context,
@@ -146,12 +147,21 @@ class _datetimeState extends State<datetime> {
                       builder: (context) => const ReminderPage(),
                     ),
                   );
-                  int notifID = getNotifID();
-                  alarmList.add(AlarmInfo(
-                    dateTime,
-                    medNameDosage,
-                    notifID,
-                  ));
+                  int notifID = AlarmInfo.id;
+                  await SQLHelper.instance.insertRecord({
+                    SQLHelper.columnID: notifID,
+                    SQLHelper.columnDesc: medNameDosage,
+                    SQLHelper.columnTime: dateTime.toString()
+                  });
+                  readRecord();
+                  var dbqeury = await SQLHelper.instance.queryRecord();
+                  addValuesFromDB();
+                  print(dbqeury);
+                  // alarmList.add(AlarmInfo(
+                  //   dateTime,
+                  //   medNameDosage,
+                  //   notifID,
+                  // ));
                   scheduleNotification(
                     dateTime,
                     notifID,
@@ -197,7 +207,13 @@ class _datetimeState extends State<datetime> {
       );
 
   int getNotifID() {
-    int id = AlarmInfo.id += 1;
-    return id;
+    AlarmInfo.id += 1;
+    return AlarmInfo.id;
+  }
+
+  void readRecord() async {
+    print("IN READ !");
+    var queryAns = await SQLHelper.instance.queryRecord();
+    print(queryAns);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medihelp/screens/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'components/alarm-info.dart';
 import 'constants.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -31,6 +32,7 @@ Future main() async {
   await notificationPlugin.initialize(
     initializationSettings,
   );
+  AlarmInfo.updateId();
   runApp(ProviderScope(child: MyApp()));
 }
 
