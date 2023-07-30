@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medihelp/main.dart';
+import '../services/SQLHelper.dart';
 import '/components/alarm-info.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -129,8 +130,10 @@ class _ReminderPageState extends State<ReminderPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                deleteNotification(alarm.alarmId);
-                                removeElementFromList(alarm.alarmId);
+                                deleteRecord(alarm.alarmId); //SQLite
+                                deleteNotification(
+                                    alarm.alarmId); //notif plugin
+                                removeElementFromList(alarm.alarmId); //list DS
                               },
                             ),
                           ],
@@ -232,6 +235,11 @@ void deleteNotification(int notifID) async {
   );
   print("deleted id\n");
   print(notifID);
+}
+
+void deleteRecord(int id) async {
+  await SQLHelper.instance.deleteRecorde(id);
+  print("Record wirh $id deleted suceessfully!");
 }
 
 void removeElementFromList(int id) {

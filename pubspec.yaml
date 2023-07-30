@@ -39,6 +39,8 @@ dependencies:
   form_validator: ^2.1.1
   fab_circular_menu: ^1.0.0
   flutter_local_notifications: ^14.1.0
+  sqflite:
+  path_provider:
 
   google_maps_flutter: ^2.2.6
   flutter:
