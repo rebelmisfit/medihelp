@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medihelp/screens/reminder-screen.dart';
 import 'package:medihelp/services/medicine_search.dart';
 import '../components/mapscreen.dart';
+import '../main.dart';
 import '../widgets/category.dart';
 import '../components/datetimepicker.dart';
 
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Meditation App',
@@ -52,15 +55,18 @@ class Dashboard extends StatelessWidget {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.topRight,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 52,
-                      width: 52,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF2BEA1),
-                        shape: BoxShape.circle,
+                    child: InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 52,
+                        width: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF2BEA1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.logout_sharp),
                       ),
-                      child: Icon(Icons.person),
+                      onTap:() =>  openDialog()
                     ),
                   ),
                   Text(
@@ -131,5 +137,28 @@ class Dashboard extends StatelessWidget {
         ],
       ),
     );
+
   }
+  Future openDialog() => showDialog(
+      context: navigatorKey.currentContext!,
+      builder: (context) => AlertDialog(
+  title: Text('Are you sure you want to logout?'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+                onPressed: () => FirebaseAuth.instance.signOut(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+                child: Text('Yes')),
+         ElevatedButton(
+                onPressed:() => DoNothingAction,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                ),
+                child: Text('No')),
+          ],
+        ),
+      ));
 }
